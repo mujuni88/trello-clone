@@ -1,14 +1,18 @@
+/* tslint:disable:no-any*/
+
 import { action, observable, ObservableMap } from 'mobx'
 import { setter } from 'mobx-decorators'
 import { uniqueId } from 'lodash'
 import { Card } from './Card'
 
 type Options = {
-  name: string
+  name: string,
+  store: any
 }
 
 export class Board {
   id: string = uniqueId('board-')
+  store: any = null
 
   @setter 
   @observable 
@@ -17,8 +21,9 @@ export class Board {
   @observable 
   cards: ObservableMap<Card> = observable.map()
 
-  constructor({ name }: Options) {
+  constructor({ name, store }: Options) {
     this.name = name
+    this.store = store
   }
 
   // Actions
@@ -29,6 +34,10 @@ export class Board {
 
   @action removeCard = (card: Card) => {
     this.cards.delete(card.id)
+  }
+
+  @action delete = () => {
+    this.store.deleteBoard(this)
   }
 
 }

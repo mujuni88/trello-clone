@@ -1,7 +1,6 @@
 import * as React from 'react'
 import { Layout, Row } from 'antd'
-import { LibList, NavMenu, Box, Text } from 'components'
-import { Route } from 'react-router-dom'
+import { NavMenu } from 'components'
 
 import './App.css'
 
@@ -18,52 +17,11 @@ export class App extends React.Component {
             <NavMenu />
           </Row>
         </Header>
-        <Content style={{ padding: '0 50px' }}>
-          <Box width={[ 1 ]} mt={3}>
-            <Route
-              exact={true}
-              path="/"
-              component={() => (
-                <Page bg="#fff">
-                  <LibList />
-                </Page>
-              )}
-            />
-            <Route
-              path="/nav1"
-              component={() => (
-                <Page bg="#FF8A65">
-                  <Text color="#fff" align="center">
-                    NAV 1
-                  </Text>
-                </Page>
-              )}
-            />
-            <Route
-              path="/nav2"
-              component={() => (
-                <Page bg="#FF5722">
-                  <Text color="#fff" align="center">
-                    NAV 2
-                  </Text>
-                </Page>
-              )}
-            />
-          </Box>
+        <Content style={{ padding: '0 50px', width: '80%', margin: `0 auto` }}>
+          {this.props.children} 
         </Content>
         <Footer style={{ textAlign: 'center' }}>Created by Joe Buza</Footer>
       </Layout>
     )
   }
-}
-
-// tslint:disable
-function Page({ children, ...rest }) { 
-  return (
-    <Row type="flex" align="middle" justify="center">
-      <Box bg="blue" w={[ 1 / 2 ]} p={[ 4 ]} {...rest}>
-        {children}
-      </Box>
-    </Row>
-  )
 }
