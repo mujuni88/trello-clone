@@ -20,12 +20,6 @@ class NavigationMenu extends React.Component<RouteComponentProps<{}>> {
         <MenuItem key="/">
           <NavLink to="/">Home</NavLink>
         </MenuItem>
-        <MenuItem key="/nav1">
-          <NavLink to="/nav1">Nav 1</NavLink>
-        </MenuItem>
-        <MenuItem key="/nav2">
-          <NavLink to="/nav2">Nav 2</NavLink>
-        </MenuItem>
       </Menu>
     )
   }

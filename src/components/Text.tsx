@@ -1,5 +1,4 @@
 /* tslint:disable:no-any*/
-/// <reference path="../@types/styled-system/index.d.ts" />
 
 import styled from 'styled-components'
 import {
