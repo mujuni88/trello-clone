@@ -1,22 +1,19 @@
-/* tslint:disable:no-any*/
-
 import { action, observable, ObservableMap } from 'mobx'
-import { setter } from 'mobx-decorators'
 import { uniqueId } from 'lodash'
 import { Card } from './Card'
+import { BoardStore } from 'stores'
 
 type Options = {
   name: string,
-  store: any
+  store: BoardStore
 }
 
 export class Board {
   id: string = uniqueId('board-')
-  store: any = null
+  store: BoardStore
 
-  @setter 
   @observable 
-  name: string = ''
+  name: string
 
   @observable 
   cards: ObservableMap<Card> = observable.map()
@@ -27,7 +24,11 @@ export class Board {
   }
 
   // Actions
-  @action createCard = (name) => {
+  @action setName = (name: string) => {
+    this.name = name
+  }
+
+  @action createCard = (name: string) => {
     const card = new Card({name}) 
     this.cards.set(card.id, card)
   }

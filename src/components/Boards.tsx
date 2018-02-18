@@ -1,8 +1,9 @@
 import * as React from 'react'
 import { observer } from 'mobx-react'
-import { Card, Icon } from 'antd'
+import { Card, Icon, Popconfirm } from 'antd'
 import styled from 'styled-components'
 import { space } from 'styled-system'
+import { isEmpty } from 'lodash/fp'
 import { Text } from './'
 
 const Grid = styled(Card.Grid)`
@@ -12,24 +13,32 @@ const Grid = styled(Card.Grid)`
   ${space}
 `
 
-const Board = observer(({store, board}) => (
+const Board = observer(({ store, board }) => (
   <Grid>
     <Card
       actions={[
-        <Icon key="edit" onClick={() => board.setShowForm(true)} type="edit" />, 
-        <Icon key="delete" onClick={board.delete} type="delete" />
+        <Icon key="edit" onClick={() => store.editBoard(board)} type="edit" />,
+        <Popconfirm
+          key="delete" 
+          title="Are you sure?"
+          onConfirm={board.delete}
+          okText="Delete Board"
+        >
+          <Icon type="delete" />
+        </Popconfirm>
       ]}
     >
-    <Text align="center" fontSize={4} ><h1>{board.name}</h1></Text>
-    {/*TODO input field */}
+      <Text align="center" fontSize={4}>
+        <h1>{board.name}</h1>
+      </Text>
+      {/*TODO input field */}
     </Card>
   </Grid>
 ))
 
-export const Boards = observer(({store}) => (
+export const Boards = observer(({ store }) => (
   <Card title="Boards">
-  {store.boards.values().map(board => 
-    <Board key={board.id} board={board} store={store} />
-  )}
+    {store.boards.values().map((board) => <Board key={board.id} board={board} store={store} />)}
+    {isEmpty(store.boards.values()) && <Text>No boards created</Text>}
   </Card>
 ))
