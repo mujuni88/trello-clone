@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { Provider } from 'mobx-react'
-import { BrowserRouter, Route } from 'react-router-dom'
-import { App, BoardsContainer } from 'containers'
+import { BrowserRouter, Route, Switch } from 'react-router-dom'
+import { App, BoardsContainer, BoardContainer  } from 'containers'
 import { ThemeProvider } from 'styled-components'
 import theme from './theme'
 import { BoardStore } from 'stores'
@@ -13,7 +13,10 @@ export default class Router extends React.Component {
         <ThemeProvider theme={theme}>
           <BrowserRouter>
             <App>
-              <Route path="/" component={BoardsContainer} />
+              <Switch>
+                <Route exact={true} path="/" component={BoardsContainer} />
+                <Route path="/boards/:boardId" component={BoardContainer} />
+              </Switch>
             </App>
           </BrowserRouter>
         </ThemeProvider>

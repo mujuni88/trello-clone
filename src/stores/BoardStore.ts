@@ -1,9 +1,6 @@
 import { action, observable, ObservableMap } from 'mobx'
 import { Board } from 'stores/models'
 
-interface Values {
-  boardName: string
-}
 export class BoardStore {
   @observable 
   showCreationForm: boolean = false
@@ -30,7 +27,7 @@ export class BoardStore {
     this.showCreationForm = !this.showCreationForm
   }
 
-  @action createBoard = ({boardName: name}: Values) => {
+  @action createBoard = (name) => {
     const board = new Board({name, store: this}) 
     this.boards.set(board.id, board)
 

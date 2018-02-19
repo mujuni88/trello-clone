@@ -2,18 +2,21 @@ import * as React from 'react'
 import { observer } from 'mobx-react'
 import { Form, Input, Button } from 'antd'
 import { hasErrors } from 'utils'
-import { Board } from 'stores/models'  
-import { BoardStore } from 'stores'  
 import { FormComponentProps } from 'antd/lib/form'
-const FormItem = Form.Item
 
-interface RenameFormProp extends FormComponentProps {
-  board: Board,
-  store: BoardStore
+const FormItem = Form.Item
+const FIELD_NAME = 'input'
+
+interface GenericFormProps extends FormComponentProps {
+  actionButtonText: string;
+  inputPlaceholder: string;
+  errorMessage: string;
+  initialValue?: string;
+  onSubmit: (value: string) => void;
 }
 
 @observer
-class RenameForm extends React.Component<RenameFormProp, {}> {
+class GForm extends React.Component<GenericFormProps, {}> {
   private inputRef: HTMLInputElement
 
   componentDidMount() {
@@ -22,13 +25,9 @@ class RenameForm extends React.Component<RenameFormProp, {}> {
 
   handleSubmit = e => {
     e.preventDefault()
-
-    const { form, board, store } = this.props
-
-    form.validateFields((err, values) => {
+    this.props.form.validateFields((err, values) => {
       if (!err) {
-        board.setName(values.boardName)
-        store.toggleRenameForm()
+        this.props.onSubmit(values[FIELD_NAME])
       }
     })
   }
@@ -38,10 +37,6 @@ class RenameForm extends React.Component<RenameFormProp, {}> {
     this.inputRef.focus()
   }
 
-  handleFocus = (e: React.ChangeEvent<HTMLInputElement>) => {
-    e.target.select()
-  }
-
   render() {
     const {
       getFieldDecorator,
@@ -49,24 +44,29 @@ class RenameForm extends React.Component<RenameFormProp, {}> {
       isFieldTouched,
       getFieldError
     } = this.props.form
+    const error =
+      isFieldTouched(FIELD_NAME) && getFieldError(FIELD_NAME)
 
-    const boardNameError =
-      isFieldTouched('boardName') && getFieldError('boardName')
+    const {
+      actionButtonText,
+      inputPlaceholder,
+      errorMessage,
+      initialValue
+    } = this.props
 
     return (
       <Form onSubmit={this.handleSubmit}>
         <FormItem
-          validateStatus={boardNameError ? 'error' : undefined}
-          help={boardNameError || ''}
+          validateStatus={error ? 'error' : undefined}
+          help={error || ''}
         >
-          {getFieldDecorator('boardName', {
-            rules: [{ required: true, message: 'Please enter board name.' }],
-            initialValue: this.props.board.name
+          {getFieldDecorator(FIELD_NAME, {
+            rules: [{ required: true, message: errorMessage}],
+            initialValue: initialValue
           })(
             <Input
               ref={this.setInputRef}
-              onFocus={this.handleFocus}
-              placeholder="Board name"
+              placeholder={inputPlaceholder}
               size="large"
             />
           )}
@@ -79,7 +79,7 @@ class RenameForm extends React.Component<RenameFormProp, {}> {
             style={{ width: '100%' }}
             disabled={hasErrors(getFieldsError())}
           >
-           Rename Board
+            {actionButtonText}
           </Button>
         </FormItem>
       </Form>
@@ -87,4 +87,4 @@ class RenameForm extends React.Component<RenameFormProp, {}> {
   }
 }
 
-export const BoardRenameForm = Form.create()(RenameForm)
+export const GenericForm = Form.create()(GForm)

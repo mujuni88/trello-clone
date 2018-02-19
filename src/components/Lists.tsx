@@ -5,8 +5,7 @@ import styled from 'styled-components'
 import { space } from 'styled-system'
 import { isEmpty } from 'lodash/fp'
 import { Text } from './'
-import { BoardStore } from 'stores'
-import { Board } from 'stores/models'
+import { List, Board } from 'stores/models'
 import { withRouter, RouteComponentProps, RouteProps } from 'react-router'
 import { Link as RouteLink } from 'react-router-dom'
 
@@ -23,46 +22,46 @@ const Grid = styled(Card.Grid)`
   ${space}
 `
 
-interface BoardProps extends RouteComponentProps<RouteProps> {
-  store: BoardStore;
-  board: Board;
+interface ListProps extends RouteComponentProps<RouteProps> {
+  store: Board;
+  list: List;
 }
 
-const BoardCard: React.SFC<BoardProps> = ({ store, board }) => (
+const ListCard: React.SFC<ListProps> = ({store, list, match}) => (
   <Grid>
     <Card
       actions={[
-        <Icon key="edit" onClick={() => store.editBoard(board)} type="edit" />,
+        <Icon key="edit" onClick={() => store.editList(list)} type="edit" />,
         <Popconfirm
           key="delete" 
           title="Are you sure?"
-          onConfirm={board.delete}
-          okText="Delete Board"
+          onConfirm={list.delete}
+          okText="Delete List"
         >
           <Icon type="delete" />
         </Popconfirm>
       ]}
     >
 
-    <Link to={`/boards/${board.id}`}>
+    <Link to={`${match.url}/lists/${list.id}`}>
       <Text 
         align="center" 
         fontSize={6}
         fontWeight="bold"
         color="text"
       >
-        {board.name}
+        {list.name}
       </Text>
     </Link>
     </Card>
   </Grid>
 )
 
-const BoardWithRouter = withRouter(observer(BoardCard))
+const ListWithRouter = withRouter(observer(ListCard))
 
-export const Boards = observer(({ store }) => (
+export const Lists = observer(({ store }) => (
   <div>
-    {store.boards.values().map((board) => <BoardWithRouter key={board.id} board={board} store={store} />)}
-    {isEmpty(store.boards.values()) && <Text>No boards created</Text>}
+    {store.lists.values().map((list) => <ListWithRouter key={list.id} list={list} store={store} />)}
+    {isEmpty(store.lists.values()) && <Text>No Lists created</Text>}
   </div>
 ))
