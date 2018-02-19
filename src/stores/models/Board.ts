@@ -1,6 +1,6 @@
 import { action, observable, ObservableMap } from 'mobx'
 import { uniqueId } from 'lodash'
-import { Card } from './Card'
+import { List } from './List'
 import { BoardStore } from 'stores'
 
 type Options = {
@@ -13,10 +13,19 @@ export class Board {
   store: BoardStore
 
   @observable 
+  showCreationForm: boolean = false
+
+  @observable 
+  showRenameForm: boolean = false
+
+  @observable
+  editedList: List
+
+  @observable 
   name: string
 
   @observable 
-  cards: ObservableMap<Card> = observable.map()
+  lists: ObservableMap<List> = observable.map()
 
   constructor({ name, store }: Options) {
     this.name = name
@@ -24,17 +33,41 @@ export class Board {
   }
 
   // Actions
+  @action setEditedList = (list: List) => {
+    this.editedList = list
+  }
+
   @action setName = (name: string) => {
     this.name = name
   }
-
-  @action createCard = (name: string) => {
-    const card = new Card({name}) 
-    this.cards.set(card.id, card)
+   
+  @action rename = (name: string) => {
+    this.setName(name)
+    this.store.toggleRenameForm()
   }
 
-  @action removeCard = (card: Card) => {
-    this.cards.delete(card.id)
+  @action toggleRenameForm = () => {
+    this.showRenameForm = !this.showRenameForm
+  }
+
+  @action toggleCreationForm = () => {
+    this.showCreationForm = !this.showCreationForm
+  }
+
+  @action createList = (name: string) => {
+    const list = new List({name, store: this}) 
+    this.lists.set(list.id, list)
+    
+    this.toggleCreationForm()
+  }
+
+  @action editList = (list: List) => {
+    this.setEditedList(list)
+    this.toggleRenameForm()
+  }
+
+  @action deleteList = (list: List) => {
+    this.lists.delete(list.id)
   }
 
   @action delete = () => {

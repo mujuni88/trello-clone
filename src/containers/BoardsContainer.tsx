@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { inject, observer } from 'mobx-react'
 import { Button } from 'antd'
-import { Flex, Boards, BoardCreationForm, BoardRenameForm, BoardFormModal } from 'components'
+import { Flex, Boards, GenericForm, BoardFormModal } from 'components'
 import { BoardStore } from 'stores'  
 
 interface BoardsContainerProp {
@@ -13,6 +13,7 @@ interface BoardsContainerProp {
 export class BoardsContainer extends React.Component<BoardsContainerProp, {}> {
   render() {
     const { boardStore } = this.props
+    const { editedBoard } = boardStore
 
     return (
       <Flex flexDirection="column">
@@ -25,11 +26,22 @@ export class BoardsContainer extends React.Component<BoardsContainerProp, {}> {
           {<Boards store={boardStore} />}
         </Flex>
         <BoardFormModal visible={boardStore.showCreationForm} onCancel={boardStore.toggleCreationForm}>
-          <BoardCreationForm onCreate={boardStore.createBoard} />
+          <GenericForm 
+            actionButtonText="Create Board"
+            inputPlaceholder="Board name"
+            errorMessage="Please enter a board name"
+            onSubmit={boardStore.createBoard} 
+          />
         </BoardFormModal>
         <br />
         <BoardFormModal visible={boardStore.showRenameForm} onCancel={boardStore.toggleRenameForm}>
-          <BoardRenameForm store={boardStore} board={boardStore.editedBoard} />
+          <GenericForm 
+            actionButtonText="Rename Board"
+            inputPlaceholder="Board name"
+            errorMessage="Please enter a board name"
+            initialValue={editedBoard ? editedBoard.name : ''}
+            onSubmit={editedBoard && editedBoard.rename} 
+          />
         </BoardFormModal>
       </Flex>
     )
