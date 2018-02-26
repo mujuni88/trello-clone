@@ -3,7 +3,7 @@ import { inject, observer } from 'mobx-react'
 import { Button } from 'antd'
 import { Text, Flex, GenericForm, BoardFormModal, Lists } from 'components'
 import { BoardStore } from 'stores'
-import { RouteComponentProps, RouteProps } from 'react-router'
+import { RouteComponentProps, RouteProps, Redirect } from 'react-router'
 
 interface MatchParams {
   boardId: string
@@ -21,17 +21,7 @@ export class BoardContainer extends React.Component<BoardContainerProp, {}> {
     const board = boardStore.boards.get(match.params.boardId)
 
     if (!board) {
-      return (
-        <Text 
-          align="center" 
-          fontSize={6} 
-          fontWeight="bold" 
-          color="text" 
-          mt={2}
-        >
-          EMPTY PAGE
-        </Text>
-      )
+      return <Redirect to={{ pathname: '/' }} />
     }
 
     const { editedList } = board

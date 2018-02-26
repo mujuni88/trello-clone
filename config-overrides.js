@@ -8,7 +8,7 @@ const rewireStyledComponents = require('react-app-rewire-styled-components')
 
 const lessOptions = {
   modifyVars: {
-    '@primary-color': '#FF5722'
+    '@primary-color': '#1476D1'
   }
 }
 

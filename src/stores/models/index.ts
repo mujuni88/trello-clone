@@ -1,3 +1,3 @@
 export { Board } from './Board'
 export { List } from './List'
-export { Todo } from './Todo'
+export { Card } from './Card'

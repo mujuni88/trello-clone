@@ -1,8 +1,6 @@
 import { action, observable, ObservableMap } from 'mobx'
 import { uniqueId } from 'lodash'
-import { Board } from 'stores/models'
-
-import { Todo } from './Todo'
+import { Board, Card } from 'stores/models'
 
 type Options = {
   name: string,
@@ -17,7 +15,13 @@ export class List {
   name: string = ''
 
   @observable 
-  todos: ObservableMap<Todo> = observable.map()
+  showCreationForm: boolean = false
+
+  @observable 
+  showRenameForm: boolean = false
+
+  @observable 
+  cards: ObservableMap<Card> = observable.map()
 
   constructor({ name, store }: Options) {
     this.name = name
@@ -25,22 +29,31 @@ export class List {
   }
 
   // Actions
+  @action toggleRenameForm = () => {
+    this.showRenameForm = !this.showRenameForm
+  }
+
+  @action toggleCreationForm = () => {
+    this.showCreationForm = !this.showCreationForm
+  }
+
   @action setName = (name: string) => {
     this.name = name
   }
 
-  @action createTodo = (name) => {
-    const todo = new Todo({name}) 
-    this.todos.set(todo.id, todo)
+  @action createCard = (name) => {
+    const card = new Card({name, store: this}) 
+    this.cards.set(card.id, card)
+
+    this.toggleCreationForm()
   }
 
-  @action deleteTodo = (todo: Todo) => {
-    this.todos.delete(todo.id)
+  @action deleteCard = (card: Card) => {
+    this.cards.delete(card.id)
   }
 
   @action rename = (name: string) => {
     this.setName(name)
-    this.store.toggleRenameForm()
   }
 
   @action delete = () => {
