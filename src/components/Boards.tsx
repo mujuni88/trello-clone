@@ -62,7 +62,7 @@ const BoardWithRouter = withRouter(observer(BoardCard))
 
 export const Boards = observer(({ store }) => (
   <div>
-    {store.boards.values().map((board) => <BoardWithRouter key={board.id} board={board} store={store} />)}
+    {store.boards.values().list((board) => <BoardWithRouter key={board.id} board={board} store={store} />)}
     {isEmpty(store.boards.values()) && <Text>No boards created</Text>}
   </div>
 ))

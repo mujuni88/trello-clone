@@ -1,4 +1,5 @@
 import { action, observable, ObservableMap } from 'mobx'
+import { serializable, identifier, list, object } from 'serializr'
 import { uniqueId } from 'lodash'
 import { Board, Card } from 'stores/models'
 
@@ -8,18 +9,24 @@ type Options = {
 }
 
 export class List {
+  @serializable(identifier())
   id: string = uniqueId('list-')
+
   store: Board;
 
+  @serializable
   @observable 
   name: string = ''
 
+  @serializable
   @observable 
   showCreationForm: boolean = false
 
+  @serializable
   @observable 
   showRenameForm: boolean = false
 
+  @serializable(list(object(Card)))
   @observable 
   cards: ObservableMap<Card> = observable.map()
 

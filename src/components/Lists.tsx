@@ -52,7 +52,7 @@ const ListWithRouter = withRouter(observer(ListCard))
 
 export const Lists = observer(({ store }) => (
   <div>
-    {store.lists.values().map((list) => <ListWithRouter key={list.id} list={list} store={store} />)}
+    {store.lists.values().list((list) => <ListWithRouter key={list.id} list={list} store={store} />)}
     {isEmpty(store.lists.values()) && <Text>No Lists created</Text>}
   </div>
 ))

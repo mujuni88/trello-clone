@@ -1,4 +1,5 @@
 import { observable, action } from 'mobx'
+import { serializable, identifier } from 'serializr'
 import { uniqueId } from 'lodash'
 import { List } from 'stores/models'
 
@@ -8,11 +9,15 @@ type Options = {
 }
 
 export class Card {
+  @serializable(identifier())
   id: string = uniqueId('card-')
+
   store: List
 
+  @serializable
   @observable name: string = ''
 
+  @serializable
   @observable
   isComplete: boolean = false
 
