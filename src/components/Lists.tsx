@@ -6,7 +6,6 @@ import { space } from 'styled-system'
 import { isEmpty } from 'lodash/fp'
 import { Text, Card as CardComponent, CardForm } from './'
 import { List, Board } from 'stores/models'
-import { withRouter, RouteComponentProps, RouteProps } from 'react-router'
 
 const Grid = styled(Card.Grid)`
   width: 24% !important;
@@ -20,12 +19,12 @@ const Grid = styled(Card.Grid)`
   }
 `
 
-interface ListProps extends RouteComponentProps<RouteProps> {
+interface ListProps {
   store: Board
   list: List
 }
 
-const ListCard: React.SFC<ListProps> = ({ store, list, match }) => (
+const ListCard: React.SFC<ListProps> = observer(({ store, list }) => (
   <Grid>
     <Card
       title={list.name}
@@ -46,13 +45,11 @@ const ListCard: React.SFC<ListProps> = ({ store, list, match }) => (
       {list.showCreationForm && <CardForm onSubmit={list.createCard} onCancel={list.toggleCreationForm} />}
     </Card>
   </Grid>
-)
-
-const ListWithRouter = withRouter(observer(ListCard))
+))
 
 export const Lists = observer(({ store }) => (
   <div>
-    {store.lists.values().map((list) => <ListWithRouter key={list.id} list={list} store={store} />)}
+    {store.lists.values().map((list) => <ListCard key={list.id} list={list} store={store} />)}
     {isEmpty(store.lists.values()) && <Text>No Lists created</Text>}
   </div>
 ))

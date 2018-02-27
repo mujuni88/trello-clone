@@ -1,0 +1,21 @@
+version: 0.2
+
+phases:
+  install:
+    commands:
+      - echo Installing source NPM dependencies...
+      - npm install -g yarn
+  pre_build:
+    commands:
+      - echo Nothing on prebuild steps
+      - yarn
+  build:
+    commands:
+      - echo Build started on `date`
+      - echo Starting test
+      - yarn test
+  post_build:
+    commands:
+      - echo Build completed on `date`
+artifacts:
+  files:

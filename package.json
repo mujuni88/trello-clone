@@ -39,5 +39,14 @@
     "ts-import-plugin": "^1.4.3",
     "tslint-config-standard": "^7.0.0",
     "typescript": "^2.7.1"
+  },
+  "jest": {
+    "moduleNameMapper": {
+      "^components(.*)$": "<rootDir>/src/components/$1",
+      "^containers(.*)$": "<rootDir>/src/containers/$1",
+      "^constants(.*)$": "<rootDir>/src/constants/$1",
+      "^utils(.*)$": "<rootDir>/src/utils/$1",
+      "^stores(.*)$": "<rootDir>/src/stores/$1"
+    }
   }
 }
