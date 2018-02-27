@@ -4,16 +4,15 @@ phases:
   install:
     commands:
       - echo Installing source NPM dependencies...
-      - npm install -g yarn
   pre_build:
     commands:
       - echo Nothing on prebuild steps
-      - yarn
+      - npm install
   build:
     commands:
       - echo Build started on `date`
       - echo Starting test
-      - yarn test
+      - npm run test:all
   post_build:
     commands:
       - echo Build completed on `date`
