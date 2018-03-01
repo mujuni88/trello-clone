@@ -23,7 +23,7 @@
     "build": "react-app-rewired build --scripts-version react-scripts-ts",
     "deploy": "aws s3 cp --recursive ./build s3://jb-trello-clone",
     "test": "react-app-rewired test --env=jsdom --scripts-version react-scripts-ts",
-    "test:all": "jest",
+    "test:all": "jest --config jest.config.js",
     "eject": "react-scripts-ts eject"
   },
   "devDependencies": {
@@ -42,26 +42,5 @@
     "ts-jest": "^22.4.0",
     "tslint-config-standard": "^7.0.0",
     "typescript": "^2.7.1"
-  },
-  "jest": {
-    "transform": {
-      "^.+\\.tsx?$": "ts-jest"
-    },
-    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
-    "moduleFileExtensions": [
-      "ts",
-      "tsx",
-      "js",
-      "jsx",
-      "json",
-      "node"
-    ],
-    "moduleNameMapper": {
-      "^components(.*)$": "<rootDir>/src/components/$1",
-      "^containers(.*)$": "<rootDir>/src/containers/$1",
-      "^constants(.*)$": "<rootDir>/src/constants/$1",
-      "^utils(.*)$": "<rootDir>/src/utils/$1",
-      "^stores(.*)$": "<rootDir>/src/stores/$1"
-    }
   }
 }
