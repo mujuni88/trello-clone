@@ -4,17 +4,23 @@ phases:
   install:
     commands:
       - echo Installing source NPM dependencies...
+      - npm install
   pre_build:
     commands:
       - echo Nothing on prebuild steps
-      - npm install
   build:
     commands:
       - echo Build started on `date`
       - echo Starting test
       - npm run test:all
+      - echo End test
+      - echo Start Build
+      - npm run build
+      - echo End Build
   post_build:
     commands:
       - echo Build completed on `date`
 artifacts:
   files:
+    - '**/*'
+  base-directory: 'build'
