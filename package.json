@@ -21,7 +21,7 @@
     "start": "react-app-rewired start --scripts-version react-scripts-ts",
     "now-start": "serve --single ./build",
     "build": "react-app-rewired build --scripts-version react-scripts-ts",
-    "deploy": "aws s3 cp --recursive ./build s3://trello-clone",
+    "deploy": "aws s3 cp --recursive ./build s3://jb-trello-clone",
     "test": "react-app-rewired test --env=jsdom --scripts-version react-scripts-ts",
     "test:all": "jest",
     "eject": "react-scripts-ts eject"
