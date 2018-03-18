@@ -1,5 +1,6 @@
-import { action, observable, ObservableMap } from 'mobx'
-import { Board } from 'stores/models'
+import { action, observable, ObservableMap, autorun } from 'mobx'
+import { Board, BoardJSON } from 'stores/models'
+import { LocalStorage } from 'stores'
 
 export class BoardStore {
   @observable 
@@ -14,6 +15,23 @@ export class BoardStore {
   @observable 
   boards: ObservableMap<Board> = observable.map()
 
+  constructor() {
+    if (!!LocalStorage.getItem('boards')) {
+      const boards = LocalStorage.getItem('boards')
+
+      Object.entries(boards).forEach(([key, value]) => 
+        this.createBoard(value)
+      )
+    }
+    autorun('Store boardstore', () => {
+      if (this.boards.size) {
+        LocalStorage.setItem('boards', this.boards)
+      } else {
+        LocalStorage.removeItem('boards')
+      }
+    })
+  }
+
   // Actions
   @action setEditedBoard = (board: Board) => {
     this.editedBoard = board
@@ -27,11 +45,11 @@ export class BoardStore {
     this.showCreationForm = !this.showCreationForm
   }
 
-  @action createBoard = (name) => {
-    const board = new Board({name, store: this}) 
+  @action createBoard = (json: BoardJSON) => {
+    const board = new Board({json, store: this}) 
     this.boards.set(board.id, board)
 
-    this.toggleCreationForm()
+    if ( this.showCreationForm) { this.toggleCreationForm()}
   }
 
   @action editBoard = (board: Board) => {
@@ -41,5 +59,9 @@ export class BoardStore {
 
   @action deleteBoard = (board) => {
     this.boards.delete(board.id)
+  }
+
+  toJSON = () => {
+    return this.boards.toJSON()
   }
 }

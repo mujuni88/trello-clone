@@ -51,7 +51,7 @@ export class BoardContainer extends React.Component<BoardContainerProp, {}> {
             actionButtonText="Create List"
             inputPlaceholder="List name"
             errorMessage="Please enter a list name"
-            onSubmit={board.createList}
+            onSubmit={name => board.createList({name})}
           />
         </BoardFormModal>
         <BoardFormModal visible={board.showRenameForm} onCancel={board.toggleRenameForm}>

@@ -42,7 +42,12 @@ const ListCard: React.SFC<ListProps> = observer(({ store, list }) => (
           Add a card
         </Button>
       )}
-      {list.showCreationForm && <CardForm onSubmit={list.createCard} onCancel={list.toggleCreationForm} />}
+      {list.showCreationForm && (
+        <CardForm
+          onSubmit={name => list.createCard({ name })}
+          onCancel={list.toggleCreationForm}
+        />
+      )}
     </Card>
   </Grid>
 ))

@@ -2,23 +2,40 @@ import { observable, action } from 'mobx'
 import { uniqueId } from 'lodash'
 import { List } from 'stores/models'
 
+export type JSON = {
+  id?: string,
+  name?: string,
+  isComplete?: boolean
+}
+
 type Options = {
-  name: string,
+  json: JSON,
   store: List
 }
 
 export class Card {
-  id: string = uniqueId('card-')
+  id: string
   store: List
 
-  @observable name: string = ''
+  @observable name: string
 
   @observable
-  isComplete: boolean = false
+  isComplete: boolean
 
-  constructor({ name, store }: Options) {
-    this.name = name
+  constructor({ json, store }: Options) {
+    this.update(json)
     this.store = store
+  }
+
+  @action
+  update = ({
+    id = uniqueId('card-'), 
+    name = '[EMPTY]',
+    isComplete = false
+  }: JSON) => {
+    this.id = id
+    this.name = name
+    this.isComplete = isComplete
   }
 
   @action
@@ -30,4 +47,10 @@ export class Card {
   delete = () => {
     this.store.deleteCard(this)
   }
+
+  toJSON = () => ({
+    id: this.id,
+    name: this.name,
+    isComplete: this.isComplete
+  })
 }
