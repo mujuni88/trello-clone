@@ -30,7 +30,7 @@ export class BoardsContainer extends React.Component<BoardsContainerProp, {}> {
             actionButtonText="Create Board"
             inputPlaceholder="Board name"
             errorMessage="Please enter a board name"
-            onSubmit={boardStore.createBoard} 
+            onSubmit={name => boardStore.createBoard({name})} 
           />
         </BoardFormModal>
         <br />

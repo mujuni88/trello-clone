@@ -1,3 +1,3 @@
-export { Board } from './Board'
-export { List } from './List'
-export { Card } from './Card'
+export { Board, JSON as BoardJSON } from './Board'
+export { List, JSON as ListJSON } from './List'
+export { Card, JSON as CardJSON } from './Card'

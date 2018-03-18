@@ -1,10 +1,16 @@
 import { action, observable, ObservableMap } from 'mobx'
 import { uniqueId } from 'lodash'
-import { List } from './List'
 import { BoardStore } from 'stores'
+import { List, ListJSON } from 'stores/models'
+
+export type JSON = {
+  id?: string,
+  name?: string,
+  lists?: ListJSON
+}
 
 type Options = {
-  name: string,
+  json: JSON,
   store: BoardStore
 }
 
@@ -27,12 +33,26 @@ export class Board {
   @observable 
   lists: ObservableMap<List> = observable.map()
 
-  constructor({ name, store }: Options) {
-    this.name = name
+  constructor({ json, store }: Options) {
+    this.update(json)
     this.store = store
   }
 
   // Actions
+  @action update = ({
+    id =  uniqueId('board-'),
+    name = '[EMPTY]',
+    lists = {}
+  }: JSON) => {
+    this.id = id
+    this.name = name
+    Object.entries(lists).forEach(([key, value]) => {
+      if (typeof value === 'string' || typeof value === 'undefined') { return }
+
+      this.createList(value)
+    })
+  }
+
   @action setEditedList = (list: List) => {
     this.editedList = list
   }
@@ -54,11 +74,15 @@ export class Board {
     this.showCreationForm = !this.showCreationForm
   }
 
-  @action createList = (name: string) => {
-    const list = new List({name, store: this}) 
-    this.lists.set(list.id, list)
-    
-    this.toggleCreationForm()
+  @action createList = (json: ListJSON) => {
+    if (json) {
+      const list = new List({ json, store: this })
+      this.lists.set(list.id, list)
+    } 
+
+    if (this.showCreationForm) {
+      this.toggleCreationForm()
+    }
   }
 
   @action editList = (list: List) => {
@@ -74,4 +98,9 @@ export class Board {
     this.store.deleteBoard(this)
   }
 
+  toJSON = () => ({
+    id: this.id,
+    name: this.name,
+    lists: this.lists.toJSON()
+  })
 }
