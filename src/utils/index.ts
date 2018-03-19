@@ -1,7 +1,5 @@
-/* tslint:disable:no-any */
+export const isUrl = (url: string) => /^(https?:\/\/)/gi.test(url)
 
-export const isUrl = (url: string): boolean => /^(https?:\/\/)/gi.test(url)
-
-export function hasErrors(fieldsError: any) {
+export function hasErrors(fieldsError: object) {
   return Object.keys(fieldsError).some(field => fieldsError[field])
 }
