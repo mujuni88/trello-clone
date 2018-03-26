@@ -1,4 +1,4 @@
-import { action, observable, ObservableMap } from 'mobx'
+import { action, observable, reaction, ObservableMap } from 'mobx'
 import { uniqueId } from 'lodash'
 import { Board, Card, CardJSON } from 'stores/models'
 
@@ -29,9 +29,17 @@ export class List {
   @observable 
   cards: ObservableMap<Card> = observable.map()
 
+  @observable
+  orderedCards: Card[] = []
+
   constructor({ json, store }: Options) {
     this.update(json)
     this.store = store
+
+    reaction(
+      () => this.orderedCards.length > this.cards.size,
+      (sync) => sync && this.sync()
+    )
   }
 
   // Actions
@@ -51,11 +59,17 @@ export class List {
     if (json) {
       const card = new Card({ json, store: this })
       this.cards.set(card.id, card)
+      this.orderedCards.push(card)
     }
 
     if (this.showCreationForm) {
       this.toggleCreationForm()
     }
+  }
+
+  @action sync = () => {
+    this.cards.clear()
+    this.orderedCards.forEach(c => this.cards.set(c.id, c))
   }
 
   @action
