@@ -14,7 +14,7 @@
     "react-scripts-ts": "2.13.0",
     "serve": "^6.5.0",
     "styled-components": "^3.1.6",
-    "styled-system": "^1.1.4",
+    "styled-system": "^2.2.1",
     "styled-tools": "^0.4.0"
   },
   "scripts": {
