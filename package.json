@@ -38,7 +38,7 @@
     "react-app-rewire-styled-components": "^3.0.0",
     "react-app-rewire-typescript": "^2.0.2",
     "react-app-rewired": "^1.4.1",
-    "ts-import-plugin": "^1.4.3",
+    "ts-import-plugin": "^1.4.4",
     "ts-jest": "^22.4.0",
     "tslint-config-standard": "^7.0.0",
     "typescript": "^2.7.1"
