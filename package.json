@@ -30,7 +30,7 @@
     "@types/jest": "^22.2.2",
     "@types/node": "^9.6.1",
     "@types/react": "^16.0.36",
-    "@types/react-dom": "^16.0.3",
+    "@types/react-dom": "^16.0.4",
     "@types/react-router-dom": "^4.2.3",
     "react-app-rewire-less": "^2.1.0",
     "react-app-rewire-lodash": "^2.0.0",
