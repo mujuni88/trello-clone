@@ -15,7 +15,7 @@
     "serve": "^6.5.0",
     "styled-components": "^3.1.6",
     "styled-system": "^2.2.1",
-    "styled-tools": "^0.4.0"
+    "styled-tools": "^0.5.0"
   },
   "scripts": {
     "start": "react-app-rewired start --scripts-version react-scripts-ts",
