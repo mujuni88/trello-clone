@@ -41,6 +41,7 @@ export class List {
 
   @action toggleCreationForm = () => {
     this.showCreationForm = !this.showCreationForm
+    this.createCard({name: uniqueId('Test-')})
   }
 
   @action setName = (name: string) => {

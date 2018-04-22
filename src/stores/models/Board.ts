@@ -2,6 +2,7 @@ import { action, observable, ObservableMap } from 'mobx'
 import { uniqueId } from 'lodash'
 import { BoardStore } from 'stores'
 import { List, ListJSON } from 'stores/models'
+import { reorder } from 'utils'
 
 export type JSON = {
   id?: string,
@@ -46,11 +47,7 @@ export class Board {
   }: JSON) => {
     this.id = id
     this.name = name
-    Object.entries(lists).forEach(([key, value]) => {
-      if (typeof value === 'string' || typeof value === 'undefined') { return }
-
-      this.createList(value)
-    })
+    this.createLists(lists)
   }
 
   @action setEditedList = (list: List) => {
@@ -72,6 +69,22 @@ export class Board {
 
   @action toggleCreationForm = () => {
     this.showCreationForm = !this.showCreationForm
+  }
+
+  @action createLists = (lists, clear = true) => { 
+    if (clear) { this.lists.clear() }
+
+    if (Array.isArray(lists)) {
+      lists.forEach(list => {
+        this.createList(list)
+      })
+    } else {
+      Object.entries(lists).forEach(([key, value]) => {
+        if (typeof value === 'string' || typeof value === 'undefined') { return }
+
+        this.createList(value)
+      })
+    }
   }
 
   @action createList = (json: ListJSON) => {
@@ -96,6 +109,11 @@ export class Board {
 
   @action delete = () => {
     this.store.deleteBoard(this)
+  }
+
+  @action reorderLists = (srcIndex, destIndex) => {
+    const lists = reorder(this.lists.values(), srcIndex, destIndex)
+    this.createLists(JSON.parse(JSON.stringify(lists)))
   }
 
   toJSON = () => ({
