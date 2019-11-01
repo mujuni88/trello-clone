@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "antd": "^3.5.4",
+    "antd": "^3.24.3",
     "mobx": "^4.1.1",
     "mobx-decorators": "^4.1.0",
     "mobx-react": "^5.1.2",
